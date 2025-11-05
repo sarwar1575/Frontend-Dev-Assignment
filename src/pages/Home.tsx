@@ -31,7 +31,7 @@ export const Home = () => {
   useEffect(() => {
     if (data?.results) {
       setAllCharacters(prev => {
-        const newChars = data.results.filter(char => 
+        const newChars = data.results.filter(char =>
           !prev.find(p => p.url === char.url)
         )
         return [...prev, ...newChars]
@@ -51,13 +51,13 @@ export const Home = () => {
         if (char.homeworld) uniqueHomeworlds.add(char.homeworld)
       })
 
-      const speciesPromises = Array.from(uniqueSpecies).map(url => 
+      const speciesPromises = Array.from(uniqueSpecies).map(url =>
         axios.get<Species>(url).then(res => ({ url, data: res.data }))
       )
-      const filmPromises = Array.from(uniqueFilms).map(url => 
+      const filmPromises = Array.from(uniqueFilms).map(url =>
         axios.get<Film>(url).then(res => ({ url, data: res.data }))
       )
-      const homeworldPromises = Array.from(uniqueHomeworlds).map(url => 
+      const homeworldPromises = Array.from(uniqueHomeworlds).map(url =>
         axios.get<Homeworld>(url).then(res => ({ url, data: res.data }))
       )
 
@@ -192,40 +192,71 @@ export const Home = () => {
 
         <SearchBar value={searchQuery} onChange={setSearchQuery} />
 
-        <div className="flex flex-wrap gap-4 justify-center mb-8">
-          <select
-            value={selectedSpecies}
-            onChange={(e) => setSelectedSpecies(e.target.value)}
-            className="px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg text-white focus:outline-none focus:border-sw-yellow focus:ring-2 focus:ring-sw-yellow/20 font-poppins"
-          >
-            <option value="">All Species</option>
-            {speciesOptions.map(species => (
-              <option key={species} value={species}>{species}</option>
-            ))}
-          </select>
+        <div className="flex flex-wrap items-center justify-center gap-4 mb-8">
 
-          <select
-            value={selectedFilm}
-            onChange={(e) => setSelectedFilm(e.target.value)}
-            className="px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg text-white focus:outline-none focus:border-sw-yellow focus:ring-2 focus:ring-sw-yellow/20 font-poppins"
-          >
-            <option value="">All Films</option>
-            {filmOptions.map(film => (
-              <option key={film} value={film}>{film}</option>
-            ))}
-          </select>
+          <div className="w-full sm:w-1/1 lg:w-1/4">
+            <select
+              value={selectedSpecies}
+              onChange={(e) => setSelectedSpecies(e.target.value)}
+              className="w-full px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg text-white focus:outline-none focus:border-sw-yellow focus:ring-2 focus:ring-sw-yellow/20 font-poppins"
+            >
+              <option value="">All Species</option>
+              {speciesOptions.map((species) => (
+                <option key={species} value={species}>
+                  {species}
+                </option>
+              ))}
+            </select>
+          </div>
 
-          <select
-            value={selectedHomeworld}
-            onChange={(e) => setSelectedHomeworld(e.target.value)}
-            className="px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg text-white focus:outline-none focus:border-sw-yellow focus:ring-2 focus:ring-sw-yellow/20 font-poppins"
-          >
-            <option value="">All Homeworlds</option>
-            {homeworldOptions.map(homeworld => (
-              <option key={homeworld} value={homeworld}>{homeworld}</option>
-            ))}
-          </select>
+
+          <div className="w-full sm:w-1/1 lg:w-1/4">
+            <select
+              value={selectedFilm}
+              onChange={(e) => setSelectedFilm(e.target.value)}
+              className="w-full px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg text-white focus:outline-none focus:border-sw-yellow focus:ring-2 focus:ring-sw-yellow/20 font-poppins"
+            >
+              <option value="">All Films</option>
+              {filmOptions.map((film) => (
+                <option key={film} value={film}>
+                  {film}
+                </option>
+              ))}
+            </select>
+          </div>
+
+
+          <div className="w-full sm:w-1/1 lg:w-1/4">
+            <select
+              value={selectedHomeworld}
+              onChange={(e) => setSelectedHomeworld(e.target.value)}
+              className="w-full px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg text-white focus:outline-none focus:border-sw-yellow focus:ring-2 focus:ring-sw-yellow/20 font-poppins"
+            >
+              <option value="">All Homeworlds</option>
+              {homeworldOptions.map((homeworld) => (
+                <option key={homeworld} value={homeworld}>
+                  {homeworld}
+                </option>
+              ))}
+            </select>
+          </div>
+
+
+          <div className="w-full sm:w-1/1 lg:w-auto">
+            <button
+              onClick={() => {
+                setSelectedSpecies('');
+                setSelectedFilm('');
+                setSelectedHomeworld('');
+              }}
+              className="w-full lg:w-auto px-6 py-2 bg-sw-yellow text-black font-semibold rounded-lg hover:bg-yellow-400 transition-all duration-300"
+            >
+              Clear Filters
+            </button>
+          </div>
         </div>
+
+
 
         {loading && allCharacters.length > 0 && (
           <div className="text-center text-sw-yellow font-poppins mb-4">
